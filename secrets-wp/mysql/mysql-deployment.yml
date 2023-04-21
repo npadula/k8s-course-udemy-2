@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-root-password2
+                key: password
+          # - name: MYSQL_ROOT_PASSWORD
+          #   value: my-secret-pw
+          # - name: MYSQL_ROOT_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: mysql-root-password
+          #       key: password
+          - name: MYSQL_DATABASE
+            value: wordpress-db
+          - name: MYSQL_USER
+            value: wordpress-user
+          - name: MYSQL_PASSWORD
+            value: wordpress-password
+        ports:
+        - name: mysql-port
+          containerPort: 3306

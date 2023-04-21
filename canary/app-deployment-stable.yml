@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-1-deployment
+  labels:
+    app: app-1
+    track: stable
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-1
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: app-1
+        track: stable
+    spec:
+      containers:
+      - name: app-1-container
+        image: docker.io/npaduladvr/k8s-learning:1.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        ports:
+        - name: express-port 
+          containerPort: 3000
